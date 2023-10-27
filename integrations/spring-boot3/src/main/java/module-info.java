@@ -13,8 +13,17 @@
  */
 module microstream.integrations.spring.boot
 {
+	exports org.eclipse.store.integrations.spring.boot.types.configuration;
 	exports org.eclipse.store.integrations.spring.boot.types.configuration.aws;
-
+	exports org.eclipse.store.integrations.spring.boot.types.configuration.azure;
+	exports org.eclipse.store.integrations.spring.boot.types.configuration.googlecloud;
+	exports org.eclipse.store.integrations.spring.boot.types.configuration.googlecloud.firestore;
+	exports org.eclipse.store.integrations.spring.boot.types.configuration.hazelcast;
+	exports org.eclipse.store.integrations.spring.boot.types.configuration.oracle;
+	exports org.eclipse.store.integrations.spring.boot.types.configuration.oracle.coherence;
+	exports org.eclipse.store.integrations.spring.boot.types.configuration.oraclecloud;
+	exports org.eclipse.store.integrations.spring.boot.types.configuration.redis;
+	exports org.eclipse.store.integrations.spring.boot.types.configuration.sql;
 
 	requires transitive spring.beans;
 	requires transitive spring.boot;
