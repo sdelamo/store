@@ -2,29 +2,25 @@ package org.eclipse.store.integrations.spring.boot.types.configuration;
 
 /*-
  * #%L
- * microstream-integrations-spring-boot3
+ * spring-boot3
  * %%
- * Copyright (C) 2019 - 2023 MicroStream Software
+ * Copyright (C) 2023 MicroStream Software
  * %%
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0.
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
  * 
- * This Source Code may also be made available under the following Secondary
- * Licenses when the conditions for such availability set forth in the Eclipse
- * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
- * with the GNU Classpath Exception which is
- * available at https://www.gnu.org/software/classpath/license.html.
- * 
- * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+ * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
+
 
 import java.util.Map;
 
 import org.eclipse.store.integrations.spring.boot.types.configuration.aws.Aws;
+import org.eclipse.store.integrations.spring.boot.types.configuration.azure.Azure;
+import org.eclipse.store.integrations.spring.boot.types.configuration.googlecloud.Googlecloud;
 import org.eclipse.store.integrations.spring.boot.types.configuration.hazelcast.Hazelcast;
-import org.eclipse.store.integrations.spring.boot.types.configuration.mongodb.Mongodb;
 import org.eclipse.store.integrations.spring.boot.types.configuration.oracle.Oracle;
 import org.eclipse.store.integrations.spring.boot.types.configuration.oraclecloud.Oraclecloud;
 import org.eclipse.store.integrations.spring.boot.types.configuration.redis.Redis;
@@ -43,6 +39,9 @@ public class StorageFilesystem
     @NestedConfigurationProperty
     private Hazelcast hazelcast;
 
+    @NestedConfigurationProperty
+    private Azure azure;
+
     /**
      * Supported properties
      * All supported properties of Kafka, see https://kafka.apache.org/documentation/
@@ -50,10 +49,10 @@ public class StorageFilesystem
     private Map<String, String> kafkaProperties;
 
     @NestedConfigurationProperty
-    private Mongodb mongodb;
+    private Oraclecloud oraclecloud;
 
     @NestedConfigurationProperty
-    private Oraclecloud oraclecloud;
+    private Googlecloud googlecloud;
 
     @NestedConfigurationProperty
     private Oracle oracle;
@@ -101,16 +100,6 @@ public class StorageFilesystem
         this.kafkaProperties = kafkaProperties;
     }
 
-    public Mongodb getMongodb()
-    {
-        return mongodb;
-    }
-
-    public void setMongodb(Mongodb mongodb)
-    {
-        this.mongodb = mongodb;
-    }
-
     public Oraclecloud getOraclecloud()
     {
         return oraclecloud;
@@ -139,5 +128,25 @@ public class StorageFilesystem
     public void setRedis(Redis redis)
     {
         this.redis = redis;
+    }
+
+    public Azure getAzure()
+    {
+        return azure;
+    }
+
+    public void setAzure(Azure azure)
+    {
+        this.azure = azure;
+    }
+
+    public Googlecloud getGooglecloud()
+    {
+        return googlecloud;
+    }
+
+    public void setGooglecloud(Googlecloud googlecloud)
+    {
+        this.googlecloud = googlecloud;
     }
 }

@@ -1,5 +1,3 @@
-package org.eclipse.store.integrations.spring.boot.types.configuration.sql;
-
 /*-
  * #%L
  * microstream-integrations-spring-boot3
@@ -13,11 +11,14 @@ package org.eclipse.store.integrations.spring.boot.types.configuration.sql;
  * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
-
-/**
- * Enterprise version
- */
-public class Mysql extends AbstractSqlConfiguration
+module microstream.integrations.spring.boot
 {
+	exports org.eclipse.store.integrations.spring.boot.types.configuration.aws;
 
+
+	requires transitive spring.beans;
+	requires transitive spring.boot;
+	requires transitive spring.boot.autoconfigure;
+	requires transitive spring.context;
+	requires transitive spring.core;
 }
