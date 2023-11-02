@@ -6,6 +6,9 @@ import java.util.Objects;
 
 import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationValues;
 import org.eclipse.store.integrations.spring.boot.types.configuration.StorageFilesystem;
+import org.eclipse.store.integrations.spring.boot.types.configuration.aws.AbstractAwsProperties;
+import org.eclipse.store.integrations.spring.boot.types.configuration.aws.Aws;
+import org.eclipse.store.integrations.spring.boot.types.configuration.azure.Azure;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.AbstractSqlConfiguration;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.Sql;
 import org.eclipse.store.storage.embedded.configuration.types.EmbeddedStorageConfigurationPropertyNames;
@@ -91,9 +94,51 @@ public class EclipseStoreConfigConverter
         if (properties.getSql() != null) {
             values.putAll(prepareSql(properties.getSql(), key + "." + ConfigKeys.SQL.getValue()));
         }
+        if (properties.getAws() != null) {
+            values.putAll(prepareAws(properties.getAws(), key + "." + ConfigKeys.AWS.getValue()));
+        }
+        if (properties.getAzure() != null) {
+            values.putAll(prepareAzure(properties.getAzure(), key + "." + ConfigKeys.AZURE.getValue()));
+        }
 
         return values;
     }
+
+    private Map<String,String> prepareAzure(Azure azure, String key) {
+        Map<String, String> values = new HashMap<>();
+        values.put(key + "." + ConfigKeys.AZURE_STORAGE_ENDPOINT, azure.getStorage().getEndpoint());
+        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CONNECTION_STRING, azure.getStorage().getConnectionString());
+        values.put(key + "." + ConfigKeys.AZURE_STORAGE_ENCRYPTION_SCOPE, azure.getStorage().getEncryptionScope());
+        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CREDENTIALS_TYPE, azure.getStorage().getCredentials().getType());
+        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CREDENTIALS_USERNAME, azure.getStorage().getCredentials().getUsername());
+        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CREDENTIALS_PASSWORD, azure.getStorage().getCredentials().getPassword());
+        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CREDENTIALS_ACCOUNT_NAME, azure.getStorage().getCredentials().getAccountMame());
+        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CREDENTIALS_ACCOUNT_KEY, azure.getStorage().getCredentials().getAccountKey());
+        return values;
+    }
+
+    private Map<String,String> prepareAws(Aws aws, String key) {
+        Map<String, String> values = new HashMap<>();
+        if (aws.getDynamodb() != null) {
+            values.putAll(prepareAwsProperties(aws.getDynamodb(), key + "." + ConfigKeys.DYNAMODB.getValue()));
+        }
+        if (aws.getS3() != null) {
+            values.putAll(prepareAwsProperties(aws.getS3(), key + "." + ConfigKeys.S3.getValue()));
+        }
+        return values;
+    }
+
+
+    private Map<String,String> prepareAwsProperties(AbstractAwsProperties awsProperties, String key) {
+        Map<String, String> values = new HashMap<>();
+        values.put(key + "." + ConfigKeys.AWS_ENDPOINT_OVERRIDE.getValue(), awsProperties.getEndpointOverride());
+        values.put(key + "." + ConfigKeys.AWS_REGION.getValue(), awsProperties.getRegion());
+        values.put(key + "." + ConfigKeys.AWS_CREDENTIALS_TYPE.getValue(), awsProperties.getCredentials().getType());
+        values.put(key + "." + ConfigKeys.AWS_CREDENTIALS_ACCESS_KEY_ID.getValue(), awsProperties.getCredentials().getAccessKeyId());
+        values.put(key + "." + ConfigKeys.AWS_CREDENTIALS_SECRET_ACCESS_KEY.getValue(), awsProperties.getCredentials().getSecretAccessKey());
+        return values;
+    }
+
 
     private Map<String, String> prepareSql(Sql sql, String key)
     {

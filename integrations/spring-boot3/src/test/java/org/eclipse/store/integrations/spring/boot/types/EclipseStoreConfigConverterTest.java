@@ -2,6 +2,7 @@ package org.eclipse.store.integrations.spring.boot.types;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Map;
 
@@ -10,14 +11,13 @@ import org.eclipse.store.integrations.spring.boot.types.configuration.StorageFil
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.Mariadb;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.Sql;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.Configuration;
 
 class EclipseStoreConfigConverterTest
 {
 
 
     @Test
-    void testBasicConvertion()
+    void testBasicConversion()
     {
         ConfigurationValues properties = new ConfigurationValues();
         properties.setChannelCount("4");
@@ -30,11 +30,12 @@ class EclipseStoreConfigConverterTest
     }
 
     @Test
-    void testSQLConfigration()
+    void testSQLConfiguration()
     {
+        String CATALOG = "super_catalog";
         Sql sql = new Sql();
         Mariadb mariadb = new Mariadb();
-        mariadb.setCatalog("super_catalog");
+        mariadb.setCatalog(CATALOG);
         mariadb.setPassword("myPssw");
         sql.setMariadb(mariadb);
         StorageFilesystem storageFilesystem = new StorageFilesystem();
@@ -43,9 +44,9 @@ class EclipseStoreConfigConverterTest
         values.setStorageFilesystem(storageFilesystem);
 
         EclipseStoreConfigConverter converter = new EclipseStoreConfigConverter();
-        Map<String, String> stringStringMap = converter.convertConfigurationToMap(values);
+        Map<String, String> valueMap = converter.convertConfigurationToMap(values);
 
-        System.out.println(stringStringMap);
-
+        assertTrue(valueMap.containsKey("storage-filesystem.sql.mariadb.catalog"));
+        assertEquals(CATALOG, valueMap.get("storage-filesystem.sql.mariadb.catalog"));
     }
 }

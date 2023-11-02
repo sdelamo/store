@@ -1,6 +1,5 @@
 package org.eclipse.store.integrations.spring.boot.types;
 
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
@@ -15,9 +14,8 @@ public class ConfigFieldsTest
 {
 
     @Test
-    void name()
+    void check_all_fields_eclipse_store_in_spring_integration_present()
     {
-
         Class<?> embeddedStorageConfigurationPropertyNames = EmbeddedStorageConfigurationPropertyNames.class;
         Field[] originalFields = embeddedStorageConfigurationPropertyNames.getDeclaredFields();
 
