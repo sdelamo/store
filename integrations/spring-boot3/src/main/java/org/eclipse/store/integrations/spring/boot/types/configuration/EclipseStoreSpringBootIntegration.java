@@ -20,7 +20,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @AutoConfiguration
 @ComponentScan(basePackages = "org.eclipse.store.integrations.spring.boot")
-@EnableConfigurationProperties(EclipseStoreConfigurationProperties.class)
+@EnableConfigurationProperties(ConfigurationValues.class)
 public class EclipseStoreSpringBootIntegration
 {
 }

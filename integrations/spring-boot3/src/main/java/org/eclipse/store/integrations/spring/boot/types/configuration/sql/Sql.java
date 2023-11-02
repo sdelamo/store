@@ -24,9 +24,6 @@ public class Sql
     private Mariadb mariadb;
 
     @NestedConfigurationProperty
-    private Mysql mysql;
-
-    @NestedConfigurationProperty
     private Oracle oracle;
 
     @NestedConfigurationProperty
@@ -43,16 +40,6 @@ public class Sql
     public void setMariadb(Mariadb mariadb)
     {
         this.mariadb = mariadb;
-    }
-
-    public Mysql getMysql()
-    {
-        return mysql;
-    }
-
-    public void setMysql(Mysql mysql)
-    {
-        this.mysql = mysql;
     }
 
     public Oracle getOracle()
