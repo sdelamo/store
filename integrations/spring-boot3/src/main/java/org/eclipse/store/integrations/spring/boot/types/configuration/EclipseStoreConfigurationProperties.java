@@ -119,6 +119,11 @@ public class EclipseStoreConfigurationProperties
     private String entityCacheTimeout;
 
     /**
+     * Abstract threshold value for the lifetime of entities in the cache. Default is 1000000000.
+     */
+    private String entityCacheThreshold;
+
+    /**
      * Minimum file size for a data file to avoid cleaning it up. Default is 1024^2 = 1 MiB.
      */
     private String dataFileMinimumSize;
@@ -375,5 +380,15 @@ public class EclipseStoreConfigurationProperties
     public void setAutoStart(final Boolean autoStart)
     {
         this.autoStart = autoStart;
+    }
+
+    public String getEntityCacheThreshold()
+    {
+        return entityCacheThreshold;
+    }
+
+    public void setEntityCacheThreshold(String entityCacheThreshold)
+    {
+        this.entityCacheThreshold = entityCacheThreshold;
     }
 }

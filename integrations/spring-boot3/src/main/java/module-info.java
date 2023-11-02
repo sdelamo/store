@@ -24,6 +24,7 @@ module microstream.integrations.spring.boot
 	exports org.eclipse.store.integrations.spring.boot.types.configuration.oraclecloud;
 	exports org.eclipse.store.integrations.spring.boot.types.configuration.redis;
 	exports org.eclipse.store.integrations.spring.boot.types.configuration.sql;
+	exports org.eclipse.store.integrations.spring.boot.types;
 
 	requires transitive spring.beans;
 	requires transitive spring.boot;
