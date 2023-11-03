@@ -1,5 +1,19 @@
 package org.eclipse.store.integrations.spring.boot.types;
 
+/*-
+ * #%L
+ * spring-boot3
+ * %%
+ * Copyright (C) 2023 MicroStream Software
+ * %%
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ * #L%
+ */
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -9,6 +23,9 @@ import org.eclipse.store.integrations.spring.boot.types.configuration.StorageFil
 import org.eclipse.store.integrations.spring.boot.types.configuration.aws.AbstractAwsProperties;
 import org.eclipse.store.integrations.spring.boot.types.configuration.aws.Aws;
 import org.eclipse.store.integrations.spring.boot.types.configuration.azure.Azure;
+import org.eclipse.store.integrations.spring.boot.types.configuration.oracle.Oracle;
+import org.eclipse.store.integrations.spring.boot.types.configuration.oracle.coherence.Coherence;
+import org.eclipse.store.integrations.spring.boot.types.configuration.oraclecloud.Oraclecloud;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.AbstractSqlConfiguration;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.Sql;
 import org.eclipse.store.storage.embedded.configuration.types.EmbeddedStorageConfigurationPropertyNames;
@@ -81,8 +98,7 @@ public class EclipseStoreConfigConverter
 
 
         //remove keys with null value
-        configValues.values()
-                .removeIf(Objects::isNull);
+        configValues.values().removeIf(Objects::isNull);
 
 
         return configValues;
@@ -91,51 +107,108 @@ public class EclipseStoreConfigConverter
     private Map<String, String> prepareFileSystem(StorageFilesystem properties, String key)
     {
         Map<String, String> values = new HashMap<>();
-        if (properties.getSql() != null) {
-            values.putAll(prepareSql(properties.getSql(), key + "." + ConfigKeys.SQL.getValue()));
+        if (properties.getSql() != null)
+        {
+            values.putAll(prepareSql(properties.getSql(), composeKey(key, ConfigKeys.SQL.value())));
         }
-        if (properties.getAws() != null) {
-            values.putAll(prepareAws(properties.getAws(), key + "." + ConfigKeys.AWS.getValue()));
+        if (properties.getAws() != null)
+        {
+            values.putAll(prepareAws(properties.getAws(), composeKey(key, ConfigKeys.AWS.value())));
         }
-        if (properties.getAzure() != null) {
-            values.putAll(prepareAzure(properties.getAzure(), key + "." + ConfigKeys.AZURE.getValue()));
+        if (properties.getAzure() != null)
+        {
+            values.putAll(prepareAzure(properties.getAzure(), composeKey(key, ConfigKeys.AZURE.value())));
         }
+        if (properties.getHazelcast() != null)
+        {
+            values.put(ConfigKeys.HAZELCAST_CONFIGURATION.value(), properties.getHazelcast().getConfiguration());
+        }
+        if (properties.getOraclecloud() != null)
+        {
+            values.putAll(prepareOracleCloud(properties.getOraclecloud(), composeKey(key, ConfigKeys.ORACLECLOUD.value())));
+        }
+        if (properties.getOracle() != null)
+        {
+            values.putAll(prepareOracle(properties.getOracle(), composeKey(key, ConfigKeys.ORACLE.value())));
+        }
+        if (properties.getRedis() != null)
+        {
+            values.put(ConfigKeys.REDIS_URI.value(), properties.getRedis().getUri());
+        }
+
 
         return values;
     }
 
-    private Map<String,String> prepareAzure(Azure azure, String key) {
+    private Map<String, String> prepareOracle(Oracle oracle, String key)
+    {
         Map<String, String> values = new HashMap<>();
-        values.put(key + "." + ConfigKeys.AZURE_STORAGE_ENDPOINT, azure.getStorage().getEndpoint());
-        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CONNECTION_STRING, azure.getStorage().getConnectionString());
-        values.put(key + "." + ConfigKeys.AZURE_STORAGE_ENCRYPTION_SCOPE, azure.getStorage().getEncryptionScope());
-        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CREDENTIALS_TYPE, azure.getStorage().getCredentials().getType());
-        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CREDENTIALS_USERNAME, azure.getStorage().getCredentials().getUsername());
-        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CREDENTIALS_PASSWORD, azure.getStorage().getCredentials().getPassword());
-        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CREDENTIALS_ACCOUNT_NAME, azure.getStorage().getCredentials().getAccountMame());
-        values.put(key + "." + ConfigKeys.AZURE_STORAGE_CREDENTIALS_ACCOUNT_KEY, azure.getStorage().getCredentials().getAccountKey());
-        return values;
-    }
-
-    private Map<String,String> prepareAws(Aws aws, String key) {
-        Map<String, String> values = new HashMap<>();
-        if (aws.getDynamodb() != null) {
-            values.putAll(prepareAwsProperties(aws.getDynamodb(), key + "." + ConfigKeys.DYNAMODB.getValue()));
-        }
-        if (aws.getS3() != null) {
-            values.putAll(prepareAwsProperties(aws.getS3(), key + "." + ConfigKeys.S3.getValue()));
+        if (oracle.getCoherence() != null)
+        {
+            values.putAll(prepareCoherence(oracle.getCoherence(), composeKey(key, ConfigKeys.COHERENCE.value() )));
         }
         return values;
     }
 
-
-    private Map<String,String> prepareAwsProperties(AbstractAwsProperties awsProperties, String key) {
+    private Map<String, String> prepareCoherence(Coherence coherence, String key)
+    {
         Map<String, String> values = new HashMap<>();
-        values.put(key + "." + ConfigKeys.AWS_ENDPOINT_OVERRIDE.getValue(), awsProperties.getEndpointOverride());
-        values.put(key + "." + ConfigKeys.AWS_REGION.getValue(), awsProperties.getRegion());
-        values.put(key + "." + ConfigKeys.AWS_CREDENTIALS_TYPE.getValue(), awsProperties.getCredentials().getType());
-        values.put(key + "." + ConfigKeys.AWS_CREDENTIALS_ACCESS_KEY_ID.getValue(), awsProperties.getCredentials().getAccessKeyId());
-        values.put(key + "." + ConfigKeys.AWS_CREDENTIALS_SECRET_ACCESS_KEY.getValue(), awsProperties.getCredentials().getSecretAccessKey());
+        values.put(composeKey(key, ConfigKeys.COHERENCE_CACHE_NAME.value()), coherence.getCacheName());
+        values.put(composeKey(key, ConfigKeys.COHERENCE_CACHE_CONFIG.value()), coherence.getCacheConfig());
+        return values;
+    }
+
+    private Map<String, String> prepareOracleCloud(Oraclecloud oraclecloud, String key)
+    {
+        Map<String, String> values = new HashMap<>();
+        values.put(composeKey(key, ConfigKeys.ORACLECLOUD_CONFIG_FILE_PATH.value()), oraclecloud.getObjectStorage().getConfigFile().getPath());
+        values.put(composeKey(key, ConfigKeys.ORACLECLOUD_CONFIG_FILE_PROFILE.value()), oraclecloud.getObjectStorage().getConfigFile().getProfile());
+        values.put(composeKey(key, ConfigKeys.ORACLECLOUD_CONFIG_FILE_CHARSET.value()), oraclecloud.getObjectStorage().getConfigFile().getCharset());
+        values.put(composeKey(key, ConfigKeys.ORACLECLOUD_CLIENT_CONNECTION_TIMEOUT_MILLIS.value()), oraclecloud.getObjectStorage().getClient().getConnectionTimeoutMillis());
+        values.put(composeKey(key, ConfigKeys.ORACLECLOUD_CLIENT_READ_TIMEOUT_MILLIS.value()), oraclecloud.getObjectStorage().getClient().getReadTimeoutMillis());
+        values.put(composeKey(key, ConfigKeys.ORACLECLOUD_CLIENT_MAX_ASYNC_THREADS.value()), oraclecloud.getObjectStorage().getClient().getMaxAsyncThreads());
+        values.put(composeKey(key, ConfigKeys.ORACLECLOUD_REGION.value()), oraclecloud.getObjectStorage().getRegion());
+        values.put(composeKey(key, ConfigKeys.ORACLECLOUD_ENDPOINT.value()), oraclecloud.getObjectStorage().getEndpoint());
+        return values;
+    }
+
+
+    private Map<String, String> prepareAzure(Azure azure, String key)
+    {
+        Map<String, String> values = new HashMap<>();
+        values.put(composeKey(key, ConfigKeys.AZURE_STORAGE_CONNECTION_STRING.value()), azure.getStorage().getConnectionString());
+        values.put(composeKey(key, ConfigKeys.AZURE_STORAGE_ENCRYPTION_SCOPE.value()), azure.getStorage().getEncryptionScope());
+        values.put(composeKey(key, ConfigKeys.AZURE_STORAGE_CREDENTIALS_TYPE.value()), azure.getStorage().getCredentials().getType());
+        values.put(composeKey(key, ConfigKeys.AZURE_STORAGE_CREDENTIALS_USERNAME.value()), azure.getStorage().getCredentials().getUsername());
+        values.put(composeKey(key, ConfigKeys.AZURE_STORAGE_CREDENTIALS_PASSWORD.value()), azure.getStorage().getCredentials().getPassword());
+        values.put(composeKey(key, ConfigKeys.AZURE_STORAGE_CREDENTIALS_ACCOUNT_NAME.value()), azure.getStorage().getCredentials().getAccountMame());
+        values.put(composeKey(key, ConfigKeys.AZURE_STORAGE_CREDENTIALS_ACCOUNT_KEY.value()), azure.getStorage().getCredentials().getAccountKey());
+        return values;
+    }
+
+    private Map<String, String> prepareAws(Aws aws, String key)
+    {
+        Map<String, String> values = new HashMap<>();
+        if (aws.getDynamodb() != null)
+        {
+            values.putAll(prepareAwsProperties(aws.getDynamodb(), composeKey(key, ConfigKeys.DYNAMODB.value())));
+        }
+        if (aws.getS3() != null)
+        {
+            values.putAll(prepareAwsProperties(aws.getS3(), composeKey(key, ConfigKeys.S3.value())));
+        }
+        return values;
+    }
+
+
+    private Map<String, String> prepareAwsProperties(AbstractAwsProperties awsProperties, String key)
+    {
+        Map<String, String> values = new HashMap<>();
+        values.put(composeKey(key, ConfigKeys.AWS_ENDPOINT_OVERRIDE.value()), awsProperties.getEndpointOverride());
+        values.put(composeKey(key, ConfigKeys.AWS_REGION.value()), awsProperties.getRegion());
+        values.put(composeKey(key, ConfigKeys.AWS_CREDENTIALS_TYPE.value()), awsProperties.getCredentials().getType());
+        values.put(composeKey(key, ConfigKeys.AWS_CREDENTIALS_ACCESS_KEY_ID.value()), awsProperties.getCredentials().getAccessKeyId());
+        values.put(composeKey(key, ConfigKeys.AWS_CREDENTIALS_SECRET_ACCESS_KEY.value()), awsProperties.getCredentials().getSecretAccessKey());
         return values;
     }
 
@@ -143,17 +216,21 @@ public class EclipseStoreConfigConverter
     private Map<String, String> prepareSql(Sql sql, String key)
     {
         Map<String, String> values = new HashMap<>();
-        if (sql.getMariadb() != null) {
-            values.putAll(prepareSqlBasic(sql.getMariadb(), key + "." + ConfigKeys.MARIADB.getValue()));
+        if (sql.getMariadb() != null)
+        {
+            values.putAll(prepareSqlBasic(sql.getMariadb(), composeKey(key, ConfigKeys.MARIADB.value())));
         }
-        if (sql.getOracle() != null) {
-            values.putAll(prepareSqlBasic(sql.getOracle(), key + "." + ConfigKeys.ORACLE.getValue()));
+        if (sql.getOracle() != null)
+        {
+            values.putAll(prepareSqlBasic(sql.getOracle(), composeKey(key, ConfigKeys.ORACLE.value())));
         }
-        if (sql.getPostgres() != null) {
-            values.putAll(prepareSqlBasic(sql.getPostgres(), key + "." + ConfigKeys.POSTGRES.getValue()));
+        if (sql.getPostgres() != null)
+        {
+            values.putAll(prepareSqlBasic(sql.getPostgres(), composeKey(key, ConfigKeys.POSTGRES.value())));
         }
-        if (sql.getSqlite() != null) {
-            values.putAll(prepareSqlBasic(sql.getSqlite(), key + "." + ConfigKeys.SQLITE.getValue()));
+        if (sql.getSqlite() != null)
+        {
+            values.putAll(prepareSqlBasic(sql.getSqlite(), composeKey(key, ConfigKeys.SQLITE.value())));
         }
 
         return values;
@@ -162,13 +239,18 @@ public class EclipseStoreConfigConverter
     private Map<String, String> prepareSqlBasic(AbstractSqlConfiguration properties, String key)
     {
         Map<String, String> values = new HashMap<>();
-        values.put(key + "." + ConfigKeys.SQL_DATA_SOURCE_PROVIDER.getValue(), properties.getDataSourceProvider());
-        values.put(key + "." + ConfigKeys.SQL_CATALOG.getValue(), properties.getCatalog());
-        values.put(key + "." + ConfigKeys.SQL_SCHEMA.getValue(), properties.getSchema());
-        values.put(key + "." + ConfigKeys.SQL_URL.getValue(), properties.getUrl());
-        values.put(key + "." + ConfigKeys.SQL_USER.getValue(), properties.getUser());
-        values.put(key + "." + ConfigKeys.SQL_PASSWORD.getValue(), properties.getPassword());
+        values.put(composeKey(key, ConfigKeys.SQL_DATA_SOURCE_PROVIDER.value()), properties.getDataSourceProvider());
+        values.put(composeKey(key, ConfigKeys.SQL_CATALOG.value()), properties.getCatalog());
+        values.put(composeKey(key, ConfigKeys.SQL_SCHEMA.value()), properties.getSchema());
+        values.put(composeKey(key, ConfigKeys.SQL_URL.value()), properties.getUrl());
+        values.put(composeKey(key, ConfigKeys.SQL_USER.value()), properties.getUser());
+        values.put(composeKey(key, ConfigKeys.SQL_PASSWORD.value()), properties.getPassword());
         return values;
+    }
+
+    private String composeKey(String prefix, String suffix)
+    {
+        return prefix + "." + suffix;
     }
 
 }
