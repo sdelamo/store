@@ -27,6 +27,10 @@ import org.junit.jupiter.api.Test;
 public class ConfigFieldsTest
 {
 
+    /**
+     * Failed, when the new configuration key is present in Eclipse Store Configuration
+     * but not present in Spring Integration
+     */
     @Test
     void check_all_fields_eclipse_store_in_spring_integration_present()
     {

@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
-module microstream.integrations.spring.boot
+open module org.eclipse.store.integrations.spring.boot
 {
 	exports org.eclipse.store.integrations.spring.boot.types.configuration;
 	exports org.eclipse.store.integrations.spring.boot.types.configuration.aws;
@@ -32,4 +32,5 @@ module microstream.integrations.spring.boot
 	requires transitive spring.context;
 	requires transitive spring.core;
 	requires org.eclipse.store.storage.embedded.configuration;
+
 }

@@ -9,7 +9,7 @@ package org.eclipse.store.integrations.spring.boot.types;
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
@@ -29,33 +29,38 @@ import org.eclipse.store.integrations.spring.boot.types.configuration.oracleclou
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.AbstractSqlConfiguration;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.Sql;
 import org.eclipse.store.storage.embedded.configuration.types.EmbeddedStorageConfigurationPropertyNames;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EclipseStoreConfigConverter
 {
 
-    private final String STORAGE_DIRECTORY = EmbeddedStorageConfigurationPropertyNames.STORAGE_DIRECTORY;
-    private final String STORAGE_FILESYSTEM = EmbeddedStorageConfigurationPropertyNames.STORAGE_FILESYSTEM;
-    private final String DELETION_DIRECTORY = EmbeddedStorageConfigurationPropertyNames.DELETION_DIRECTORY;
-    private final String TRUNCATION_DIRECTORY = EmbeddedStorageConfigurationPropertyNames.TRUNCATION_DIRECTORY;
-    private final String BACKUP_DIRECTORY = EmbeddedStorageConfigurationPropertyNames.BACKUP_DIRECTORY;
-    private final String BACKUP_FILESYSTEM = EmbeddedStorageConfigurationPropertyNames.BACKUP_FILESYSTEM;
-    private final String CHANNEL_COUNT = EmbeddedStorageConfigurationPropertyNames.CHANNEL_COUNT;
-    private final String CHANNEL_DIRECTORY_PREFIX = EmbeddedStorageConfigurationPropertyNames.CHANNEL_DIRECTORY_PREFIX;
-    private final String DATA_FILE_PREFIX = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_PREFIX;
-    private final String DATA_FILE_SUFFIX = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_SUFFIX;
-    private final String TRANSACTION_FILE_PREFIX = EmbeddedStorageConfigurationPropertyNames.TRANSACTION_FILE_PREFIX;
-    private final String TRANSACTION_FILE_SUFFIX = EmbeddedStorageConfigurationPropertyNames.TRANSACTION_FILE_SUFFIX;
-    private final String TYPE_DICTIONARY_FILE_NAME = EmbeddedStorageConfigurationPropertyNames.TYPE_DICTIONARY_FILE_NAME;
-    private final String RESCUED_FILE_SUFFIX = EmbeddedStorageConfigurationPropertyNames.RESCUED_FILE_SUFFIX;
-    private final String LOCK_FILE_NAME = EmbeddedStorageConfigurationPropertyNames.LOCK_FILE_NAME;
-    private final String HOUSEKEEPING_INTERVAL = EmbeddedStorageConfigurationPropertyNames.HOUSEKEEPING_INTERVAL;
-    private final String HOUSEKEEPING_TIME_BUDGET = EmbeddedStorageConfigurationPropertyNames.HOUSEKEEPING_TIME_BUDGET;
-    private final String ENTITY_CACHE_THRESHOLD = EmbeddedStorageConfigurationPropertyNames.ENTITY_CACHE_THRESHOLD;
-    private final String ENTITY_CACHE_TIMEOUT = EmbeddedStorageConfigurationPropertyNames.ENTITY_CACHE_TIMEOUT;
-    private final String DATA_FILE_MINIMUM_SIZE = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_MINIMUM_SIZE;
-    private final String DATA_FILE_MAXIMUM_SIZE = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_MAXIMUM_SIZE;
-    private final String DATA_FILE_MINIMUM_USE_RATIO = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_MINIMUM_USE_RATIO;
-    private final String DATA_FILE_CLEANUP_HEAD_FILE = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_CLEANUP_HEAD_FILE;
+    /**
+     * These fields are there to check in test, if all keys from Eclipse Store Configuration are covered by these module.
+     */
+    protected static final String STORAGE_DIRECTORY = EmbeddedStorageConfigurationPropertyNames.STORAGE_DIRECTORY;
+    protected static final String STORAGE_FILESYSTEM = EmbeddedStorageConfigurationPropertyNames.STORAGE_FILESYSTEM;
+    protected static final String DELETION_DIRECTORY = EmbeddedStorageConfigurationPropertyNames.DELETION_DIRECTORY;
+    protected static final String TRUNCATION_DIRECTORY = EmbeddedStorageConfigurationPropertyNames.TRUNCATION_DIRECTORY;
+    protected static final String BACKUP_DIRECTORY = EmbeddedStorageConfigurationPropertyNames.BACKUP_DIRECTORY;
+    protected static final String BACKUP_FILESYSTEM = EmbeddedStorageConfigurationPropertyNames.BACKUP_FILESYSTEM;
+    protected static final String CHANNEL_COUNT = EmbeddedStorageConfigurationPropertyNames.CHANNEL_COUNT;
+    protected static final String CHANNEL_DIRECTORY_PREFIX = EmbeddedStorageConfigurationPropertyNames.CHANNEL_DIRECTORY_PREFIX;
+    protected static final String DATA_FILE_PREFIX = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_PREFIX;
+    protected static final String DATA_FILE_SUFFIX = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_SUFFIX;
+    protected static final String TRANSACTION_FILE_PREFIX = EmbeddedStorageConfigurationPropertyNames.TRANSACTION_FILE_PREFIX;
+    protected static final String TRANSACTION_FILE_SUFFIX = EmbeddedStorageConfigurationPropertyNames.TRANSACTION_FILE_SUFFIX;
+    protected static final String TYPE_DICTIONARY_FILE_NAME = EmbeddedStorageConfigurationPropertyNames.TYPE_DICTIONARY_FILE_NAME;
+    protected static final String RESCUED_FILE_SUFFIX = EmbeddedStorageConfigurationPropertyNames.RESCUED_FILE_SUFFIX;
+    protected static final String LOCK_FILE_NAME = EmbeddedStorageConfigurationPropertyNames.LOCK_FILE_NAME;
+    protected static final String HOUSEKEEPING_INTERVAL = EmbeddedStorageConfigurationPropertyNames.HOUSEKEEPING_INTERVAL;
+    protected static final String HOUSEKEEPING_TIME_BUDGET = EmbeddedStorageConfigurationPropertyNames.HOUSEKEEPING_TIME_BUDGET;
+    protected static final String ENTITY_CACHE_THRESHOLD = EmbeddedStorageConfigurationPropertyNames.ENTITY_CACHE_THRESHOLD;
+    protected static final String ENTITY_CACHE_TIMEOUT = EmbeddedStorageConfigurationPropertyNames.ENTITY_CACHE_TIMEOUT;
+    protected static final String DATA_FILE_MINIMUM_SIZE = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_MINIMUM_SIZE;
+    protected static final String DATA_FILE_MAXIMUM_SIZE = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_MAXIMUM_SIZE;
+    protected static final String DATA_FILE_MINIMUM_USE_RATIO = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_MINIMUM_USE_RATIO;
+    protected static final String DATA_FILE_CLEANUP_HEAD_FILE = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_CLEANUP_HEAD_FILE;
 
 
     public Map<String, String> convertConfigurationToMap(ConfigurationValues properties)
@@ -145,7 +150,7 @@ public class EclipseStoreConfigConverter
         Map<String, String> values = new HashMap<>();
         if (oracle.getCoherence() != null)
         {
-            values.putAll(prepareCoherence(oracle.getCoherence(), composeKey(key, ConfigKeys.COHERENCE.value() )));
+            values.putAll(prepareCoherence(oracle.getCoherence(), composeKey(key, ConfigKeys.COHERENCE.value())));
         }
         return values;
     }
@@ -248,7 +253,7 @@ public class EclipseStoreConfigConverter
         return values;
     }
 
-    private String composeKey(String prefix, String suffix)
+    protected String composeKey(String prefix, String suffix)
     {
         return prefix + "." + suffix;
     }

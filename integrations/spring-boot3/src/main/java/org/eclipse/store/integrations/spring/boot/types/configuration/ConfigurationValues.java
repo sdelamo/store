@@ -17,7 +17,9 @@ package org.eclipse.store.integrations.spring.boot.types.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 @ConfigurationProperties(prefix = "org.eclipse.store")
 public class ConfigurationValues
 {
