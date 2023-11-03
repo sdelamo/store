@@ -20,19 +20,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @TestPropertySource("classpath:application-test.properties")
-@SpringBootTest(classes = {TestPropertiesConfig.class})
+@SpringBootTest(classes = {EclipseStoreConfiguration.class})
 public class EclipseConfigurationSpringTest
 {
 
     @Autowired
     ConfigurationValues values;
 
-    @Test
-    void name()
-    {
-        System.out.println(values.getStorageDirectory());
+    @Autowired
+    EclipseStoreConfigConverter converter;
 
+    @Test
+    void checkStorageDirectoryValue()
+    {
+        assertNotNull(values.getStorageDirectory());
     }
 
+    @Test
+    void converterBasicTest()
+    {
+        Map<String, String> valueMap = converter.convertConfigurationToMap(values);
+
+        assertTrue(valueMap.containsKey("storage-filesystem.sql.postgres.data-source-provider"));
+
+    }
 }
