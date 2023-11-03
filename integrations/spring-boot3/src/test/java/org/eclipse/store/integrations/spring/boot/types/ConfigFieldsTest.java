@@ -43,11 +43,11 @@ public class ConfigFieldsTest
 
         List<String> originalFieldNames = Arrays.stream(originalFields)
                 .map(Field::getName)
-                .collect(Collectors.toList());
+                .toList();
 
         List<String> converterFieldsNames = Arrays.stream(converterFields)
                 .map(Field::getName)
-                .collect(Collectors.toList());
+                .toList();
 
         assertTrue(converterFieldsNames.containsAll(originalFieldNames));
     }
