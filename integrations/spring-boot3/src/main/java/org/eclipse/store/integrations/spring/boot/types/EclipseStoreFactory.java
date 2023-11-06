@@ -20,17 +20,9 @@ public class EclipseStoreFactory
         this.configurationValues = configurationValues;
     }
 
+
     @Bean
     @Lazy
-    @Primary
-    public EmbeddedStorageFoundation<?> embeddedStorageFoundation()
-    {
-        return eclipseStoreProvider.createStorageFoundation(configurationValues);
-    }
-
-    @Bean(destroyMethod = "shutdown")
-    @Lazy
-    @Primary
     public EmbeddedStorageManager embeddedStorageManager()
     {
         return eclipseStoreProvider.createStorage(configurationValues);
