@@ -9,7 +9,7 @@ package org.eclipse.store.integrations.spring.boot.types.configuration;
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
@@ -17,11 +17,16 @@ package org.eclipse.store.integrations.spring.boot.types.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.context.annotation.Configuration;
 
 @ConfigurationProperties(prefix = "org.eclipse.store")
 public class ConfigurationValues
 {
+
+    /**
+     * Specify the complete path for the class, which will serve as the root. This class must have a public parameterless constructor.
+     * Example: "org.eclipse.store.Root"
+     */
+    private String root;
 
     /**
      * The base directory of the storage in the file system. Default is "storage" in the working directory.
@@ -391,5 +396,15 @@ public class ConfigurationValues
     public void setEntityCacheThreshold(String entityCacheThreshold)
     {
         this.entityCacheThreshold = entityCacheThreshold;
+    }
+
+    public String getRoot()
+    {
+        return root;
+    }
+
+    public void setRoot(String root)
+    {
+        this.root = root;
     }
 }

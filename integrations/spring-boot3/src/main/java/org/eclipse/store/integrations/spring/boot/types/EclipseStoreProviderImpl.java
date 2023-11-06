@@ -14,7 +14,7 @@ import java.util.Map;
 @Component
 public class EclipseStoreProviderImpl implements EclipseStoreProvider
 {
-    private EclipseStoreConfigConverter converter;
+    private final EclipseStoreConfigConverter converter;
     private final ApplicationContext applicationContext;
 
     private final Logger logger = Logging.getLogger(EclipseStoreProviderImpl.class);
@@ -28,13 +28,19 @@ public class EclipseStoreProviderImpl implements EclipseStoreProvider
     @Override
     public EmbeddedStorageManager createStorage(ConfigurationValues configurationValues)
     {
-        return createStorage(createStorageFoundation(configurationValues));
+        EmbeddedStorageFoundation<?> storageFoundation = createStorageFoundation(configurationValues);
+        return createStorage(storageFoundation, configurationValues);
     }
 
     @Override
-    public EmbeddedStorageManager createStorage(EmbeddedStorageFoundation<?> foundation)
+    public EmbeddedStorageManager createStorage(EmbeddedStorageFoundation<?> foundation, ConfigurationValues configurationValues)
     {
-        return foundation.createEmbeddedStorageManager();
+        EmbeddedStorageManager storageManager = foundation.createEmbeddedStorageManager();
+        if (configurationValues.getAutoStart() != null && configurationValues.getAutoStart())
+        {
+            storageManager.start();
+        }
+        return storageManager;
     }
 
     @Override
@@ -54,10 +60,33 @@ public class EclipseStoreProviderImpl implements EclipseStoreProvider
             }
         });
 
+        EmbeddedStorageFoundation<?> storageFoundation = builder.createEmbeddedStorageFoundation();
 
-        final EmbeddedStorageFoundation<?> storageFoundation = builder.createEmbeddedStorageFoundation();
+        Object o = provideRoot(configurationValues);
+        if (o != null)
+        {
+            storageFoundation.setRoot(o);
+        }
         storageFoundation.getConnectionFoundation()
                 .setClassLoaderProvider(typeName -> this.applicationContext.getClassLoader());
+
         return storageFoundation;
     }
+
+    private Object provideRoot(ConfigurationValues configurationValues)
+    {
+        Object o = null;
+        if (configurationValues.getRoot() != null)
+        {
+            try
+            {
+                o = Class.forName(configurationValues.getRoot()).getDeclaredConstructor().newInstance();
+            } catch (Exception e)
+            {
+                throw new RuntimeException("Class :" + configurationValues.getRoot() + " could not be instantiated." + e);
+            }
+        }
+        return o;
+    }
+
 }

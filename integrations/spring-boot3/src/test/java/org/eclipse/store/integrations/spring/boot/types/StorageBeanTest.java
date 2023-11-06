@@ -1,26 +1,19 @@
 package org.eclipse.store.integrations.spring.boot.types;
 
 
-import org.eclipse.serializer.persistence.binary.java.util.BinaryHandlerGenericMap;
 import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationValues;
-import org.eclipse.store.storage.embedded.types.EmbeddedStorageConnectionFoundation;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageFoundation;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.system.ApplicationTemp;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.TestPropertySource;
 
-import java.nio.file.Path;
-import java.util.HashMap;
-
+@TestPropertySource("classpath:application-test.properties")
 @SpringBootTest(classes = {EclipseStoreConfiguration.class, StorageBeanTest.class})
 public class StorageBeanTest
 {

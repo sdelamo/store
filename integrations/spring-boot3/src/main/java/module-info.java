@@ -31,6 +31,8 @@ open module org.eclipse.store.integrations.spring.boot
 	requires transitive spring.boot.autoconfigure;
 	requires transitive spring.context;
 	requires transitive spring.core;
-	requires org.eclipse.store.storage.embedded.configuration;
+	requires transitive org.eclipse.store.storage.embedded.configuration;
+	requires transitive org.eclipse.serializer.configuration;
+
 
 }
