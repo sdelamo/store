@@ -48,7 +48,7 @@ public class TwoBeanConfiguration
     @Bean
     @Lazy
     @Qualifier("first_storage")
-    EmbeddedStorageManager createFirstStorage(@Autowired @Qualifier("first_config") EclipseStoreProperties firstStoreProperties)
+    EmbeddedStorageManager createFirstStorage(@Qualifier("first_config") EclipseStoreProperties firstStoreProperties)
     {
         return provider.createStorage(firstStoreProperties);
     }
@@ -56,7 +56,7 @@ public class TwoBeanConfiguration
     @Bean
     @Lazy
     @Qualifier("second_storage")
-    EmbeddedStorageManager createSecondStorage(@Autowired @Qualifier("second_config") EclipseStoreProperties secondStoreProperties)
+    EmbeddedStorageManager createSecondStorage(@Qualifier("second_config") EclipseStoreProperties secondStoreProperties)
     {
         return provider.createStorage(secondStoreProperties);
     }
