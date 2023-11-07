@@ -14,7 +14,7 @@ package org.eclipse.store.integrations.spring.boot.types;
  * #L%
  */
 
-import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
+import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationValues;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
