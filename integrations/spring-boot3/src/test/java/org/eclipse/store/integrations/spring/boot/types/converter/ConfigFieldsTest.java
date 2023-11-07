@@ -14,15 +14,14 @@ package org.eclipse.store.integrations.spring.boot.types.converter;
  * #L%
  */
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.eclipse.store.storage.embedded.configuration.types.EmbeddedStorageConfigurationPropertyNames;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.store.integrations.spring.boot.types.converter.EclipseStoreConfigConverter;
-import org.eclipse.store.storage.embedded.configuration.types.EmbeddedStorageConfigurationPropertyNames;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfigFieldsTest
 {
