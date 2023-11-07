@@ -1,4 +1,4 @@
-package org.eclipse.store.integrations.spring.boot.types;
+package org.eclipse.store.integrations.spring.boot.types.converter;
 
 /*-
  * #%L
@@ -20,6 +20,7 @@ import org.eclipse.store.integrations.spring.boot.types.configuration.Configurat
 import org.eclipse.store.integrations.spring.boot.types.configuration.StorageFilesystem;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.Mariadb;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.Sql;
+import org.eclipse.store.integrations.spring.boot.types.converter.EclipseStoreConfigConverter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource("classpath:application-run.properties")
-@SpringBootTest(classes = {EclipseStoreConfiguration.class, StorageBeanTest.class})
+@SpringBootTest(classes = {EclipseStoreSpringBoot.class, StorageBeanTest.class})
 public class StorageBeanTest
 {
 

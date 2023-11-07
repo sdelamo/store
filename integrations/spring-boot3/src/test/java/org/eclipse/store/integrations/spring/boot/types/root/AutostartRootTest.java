@@ -1,6 +1,6 @@
 package org.eclipse.store.integrations.spring.boot.types.root;
 
-import org.eclipse.store.integrations.spring.boot.types.EclipseStoreConfiguration;
+import org.eclipse.store.integrations.spring.boot.types.EclipseStoreSpringBoot;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestPropertySource("classpath:application-autostart-root.properties")
-@SpringBootTest(classes = {EclipseStoreConfiguration.class})
+@SpringBootTest(classes = {EclipseStoreSpringBoot.class})
 public class AutostartRootTest
 {
 

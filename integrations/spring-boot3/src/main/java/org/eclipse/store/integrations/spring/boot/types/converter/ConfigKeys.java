@@ -1,4 +1,4 @@
-package org.eclipse.store.integrations.spring.boot.types;
+package org.eclipse.store.integrations.spring.boot.types.converter;
 
 /*-
  * #%L

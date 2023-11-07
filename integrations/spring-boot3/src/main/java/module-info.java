@@ -25,8 +25,9 @@ open module org.eclipse.store.integrations.spring.boot
 	exports org.eclipse.store.integrations.spring.boot.types.configuration.redis;
 	exports org.eclipse.store.integrations.spring.boot.types.configuration.sql;
 	exports org.eclipse.store.integrations.spring.boot.types;
+    exports org.eclipse.store.integrations.spring.boot.types.converter;
 
-	requires transitive spring.beans;
+    requires transitive spring.beans;
 	requires transitive spring.boot;
 	requires transitive spring.boot.autoconfigure;
 	requires transitive spring.context;

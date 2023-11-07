@@ -14,7 +14,9 @@ package org.eclipse.store.integrations.spring.boot.types;
  * #L%
  */
 
+import org.eclipse.store.integrations.spring.boot.types.EclipseStoreSpringBoot;
 import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationValues;
+import org.eclipse.store.integrations.spring.boot.types.converter.EclipseStoreConfigConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestPropertySource("classpath:application-test.properties")
-@SpringBootTest(classes = {EclipseStoreConfiguration.class})
+@SpringBootTest(classes = {EclipseStoreSpringBoot.class})
 public class EclipseConfigurationSpringTest
 {
 
