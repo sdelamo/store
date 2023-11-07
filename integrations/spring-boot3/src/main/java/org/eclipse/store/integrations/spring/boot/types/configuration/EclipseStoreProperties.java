@@ -15,9 +15,15 @@ package org.eclipse.store.integrations.spring.boot.types.configuration;
  */
 
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
 
+@Configuration
+@Primary
 @ConfigurationProperties(prefix = "org.eclipse.store")
 public class EclipseStoreProperties
 {

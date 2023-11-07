@@ -16,11 +16,14 @@ package org.eclipse.store.integrations.spring.boot.types;
 
 import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
+@Lazy
 public class EclipseStoreBeanFactory
 {
     private final EclipseStoreProvider eclipseStoreProvider;
@@ -34,6 +37,7 @@ public class EclipseStoreBeanFactory
 
 
     @Bean
+    @Primary
     @Lazy
     public EmbeddedStorageManager embeddedStorageManager()
     {
