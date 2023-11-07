@@ -26,7 +26,7 @@ public class ConfigurationValues
      * Specify the complete path for the class, which will serve as the root. This class must have a public parameterless constructor.
      * Example: "org.eclipse.store.Root"
      */
-    private String root;
+    private Class<?> root;
 
     /**
      * The base directory of the storage in the file system. Default is "storage" in the working directory.
@@ -398,12 +398,12 @@ public class ConfigurationValues
         this.entityCacheThreshold = entityCacheThreshold;
     }
 
-    public String getRoot()
+    public Class<?> getRoot()
     {
         return root;
     }
 
-    public void setRoot(String root)
+    public void setRoot(Class<?> root)
     {
         this.root = root;
     }

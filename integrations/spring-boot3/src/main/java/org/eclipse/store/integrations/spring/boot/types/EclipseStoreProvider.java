@@ -23,7 +23,7 @@ public interface EclipseStoreProvider
 
     EmbeddedStorageManager createStorage(ConfigurationValues configurationValues);
 
-    EmbeddedStorageManager createStorage(EmbeddedStorageFoundation<?> foundation, ConfigurationValues configurationValues);
+    EmbeddedStorageManager createStorage(EmbeddedStorageFoundation<?> foundation,  Boolean autoStart);
 
     EmbeddedStorageFoundation<?> createStorageFoundation(ConfigurationValues configurationValues);
 

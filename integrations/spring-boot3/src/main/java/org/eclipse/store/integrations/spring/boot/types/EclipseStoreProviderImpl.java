@@ -43,14 +43,14 @@ public class EclipseStoreProviderImpl implements EclipseStoreProvider
     public EmbeddedStorageManager createStorage(ConfigurationValues configurationValues)
     {
         EmbeddedStorageFoundation<?> storageFoundation = createStorageFoundation(configurationValues);
-        return createStorage(storageFoundation, configurationValues);
+        return createStorage(storageFoundation, configurationValues.getAutoStart());
     }
 
     @Override
-    public EmbeddedStorageManager createStorage(EmbeddedStorageFoundation<?> foundation, ConfigurationValues configurationValues)
+    public EmbeddedStorageManager createStorage(EmbeddedStorageFoundation<?> foundation, Boolean autoStart)
     {
         EmbeddedStorageManager storageManager = foundation.createEmbeddedStorageManager();
-        if (configurationValues.getAutoStart() != null && configurationValues.getAutoStart())
+        if (autoStart)
         {
             storageManager.start();
         }
@@ -94,7 +94,7 @@ public class EclipseStoreProviderImpl implements EclipseStoreProvider
         {
             try
             {
-                o = Class.forName(configurationValues.getRoot()).getDeclaredConstructor().newInstance();
+                o = configurationValues.getRoot().getDeclaredConstructor().newInstance();
             } catch (Exception e)
             {
                 throw new RuntimeException("Class :" + configurationValues.getRoot() + " could not be instantiated." + e);
