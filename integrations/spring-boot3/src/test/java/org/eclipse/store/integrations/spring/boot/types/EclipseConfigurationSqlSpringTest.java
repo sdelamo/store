@@ -25,7 +25,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@TestPropertySource("classpath:sql-test.properties")
+@TestPropertySource("classpath:application-sql.properties")
 @SpringBootTest(classes = {EclipseStoreConfiguration.class})
 public class EclipseConfigurationSqlSpringTest
 {
