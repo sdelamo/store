@@ -16,5 +16,25 @@ package org.eclipse.store.integrations.spring.boot.types.storages;
 
 public class SecondRoot
 {
+    private Integer intValue = 50;
+    private char c = 'c';
 
+    @Override
+    public String toString()
+    {
+        return "SecondRoot{" +
+                "intValue=" + intValue +
+                ", c=" + c +
+                '}';
+    }
+
+    public Integer getIntValue()
+    {
+        return intValue;
+    }
+
+    public char getC()
+    {
+        return c;
+    }
 }

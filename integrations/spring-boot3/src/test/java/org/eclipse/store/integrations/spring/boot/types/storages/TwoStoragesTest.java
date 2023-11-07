@@ -16,6 +16,7 @@ package org.eclipse.store.integrations.spring.boot.types.storages;
 
 import org.eclipse.store.integrations.spring.boot.types.EclipseStoreSpringBoot;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,18 +32,18 @@ public class TwoStoragesTest
 
     @Autowired
     @Qualifier("first_storage")
-    EmbeddedStorageManager first_storage;
+    EmbeddedStorageManager firstStorage;
 
     @Autowired
     @Qualifier("second_storage")
-    EmbeddedStorageManager second_storage;
+    EmbeddedStorageManager secondStorage;
 
 
     @Test
     void name()
     {
-        System.out.println(first_storage.root());
-        System.out.println(second_storage.root());
+        Assertions.assertEquals("FirstRoot{value='First root value'}", firstStorage.root().toString());
+        Assertions.assertEquals("SecondRoot{intValue=50, c=c}", secondStorage.root().toString());
     }
 
 }
