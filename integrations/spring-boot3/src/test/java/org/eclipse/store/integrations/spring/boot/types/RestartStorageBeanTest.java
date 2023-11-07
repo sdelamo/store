@@ -27,8 +27,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource("classpath:application-run.properties")
-@SpringBootTest(classes = {EclipseStoreSpringBoot.class, StorageBeanTest.class})
-public class StorageBeanTest
+@SpringBootTest(classes = {EclipseStoreSpringBoot.class, RestartStorageBeanTest.class})
+public class RestartStorageBeanTest
 {
 
     @Autowired
@@ -54,19 +54,44 @@ public class StorageBeanTest
     @Test
     void restartStorageTest(@Autowired EmbeddedStorageManager manager)
     {
-        String s = "ahoj";
+        RestartRoot root = new RestartRoot("ahoj");
         manager.start();
-        manager.setRoot(s);
+        manager.setRoot(root);
         manager.storeRoot();
         manager.shutdown();
 
         Assertions.assertEquals(tempFolder, manager.configuration().fileProvider().baseDirectory().toPathString());
 
-        try (EmbeddedStorageManager storage = provider.createStorage(myConfiguration))
+        EmbeddedStorageFoundation<?> storageFoundation = provider.createStorageFoundation(myConfiguration);
+        RestartRoot root2 = new RestartRoot();
+        storageFoundation.setRoot(root2);
+        try (EmbeddedStorageManager storage = storageFoundation.start())
         {
-            storage.start();
-            String stringFromStorage = (String) storage.root();
-            Assertions.assertEquals(s, stringFromStorage);
+            RestartRoot rootFromStorage = (RestartRoot) storage.root();
+            Assertions.assertEquals("ahoj", rootFromStorage.getValue());
+        }
+    }
+
+    static class RestartRoot {
+        private String value;
+
+        public RestartRoot(String value)
+        {
+            this.value = value;
+        }
+
+        public RestartRoot()
+        {
+        }
+
+        public String getValue()
+        {
+            return value;
+        }
+
+        public void setValue(String value)
+        {
+            this.value = value;
         }
     }
 }
