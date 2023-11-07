@@ -15,7 +15,7 @@ package org.eclipse.store.integrations.spring.boot.types;
  */
 
 
-import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationValues;
+import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageFoundation;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
 import org.junit.jupiter.api.Assertions;
@@ -36,7 +36,7 @@ public class StorageBeanTest
     EclipseStoreProvider provider;
 
     @Autowired
-    ConfigurationValues myConfiguration;
+    EclipseStoreProperties myConfiguration;
 
     @Bean
     @Primary

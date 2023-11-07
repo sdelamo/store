@@ -16,11 +16,10 @@ package org.eclipse.store.integrations.spring.boot.types.converter;
 
 import java.util.Map;
 
-import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationValues;
+import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
 import org.eclipse.store.integrations.spring.boot.types.configuration.StorageFilesystem;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.Mariadb;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.Sql;
-import org.eclipse.store.integrations.spring.boot.types.converter.EclipseStoreConfigConverter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +32,7 @@ class EclipseStoreConfigConverterTest
     @Test
     void testBasicConversion()
     {
-        ConfigurationValues properties = new ConfigurationValues();
+        EclipseStoreProperties properties = new EclipseStoreProperties();
         properties.setChannelCount("4");
 
         EclipseStoreConfigConverter converter = new EclipseStoreConfigConverter();
@@ -55,7 +54,7 @@ class EclipseStoreConfigConverterTest
         sql.setMariadb(mariadb);
         StorageFilesystem storageFilesystem = new StorageFilesystem();
         storageFilesystem.setSql(sql);
-        ConfigurationValues values = new ConfigurationValues();
+        EclipseStoreProperties values = new EclipseStoreProperties();
         values.setStorageFilesystem(storageFilesystem);
 
         EclipseStoreConfigConverter converter = new EclipseStoreConfigConverter();
@@ -67,7 +66,7 @@ class EclipseStoreConfigConverterTest
 
     @Test
     void testConvertConfigurationToMap() {
-        ConfigurationValues configValues = new ConfigurationValues();
+        EclipseStoreProperties configValues = new EclipseStoreProperties();
         Map<String, String> result = converter.convertConfigurationToMap(configValues);
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -75,7 +74,7 @@ class EclipseStoreConfigConverterTest
 
     @Test
     void testConvertConfigurationToMapWithStorageDirectory() {
-        ConfigurationValues configValues = new ConfigurationValues();
+        EclipseStoreProperties configValues = new EclipseStoreProperties();
         configValues.setStorageDirectory("storage/dir");
         Map<String, String> result = converter.convertConfigurationToMap(configValues);
         assertNotNull(result);
@@ -84,7 +83,7 @@ class EclipseStoreConfigConverterTest
 
     @Test
     void testNullValuesAreRemoved() {
-        ConfigurationValues configValues = new ConfigurationValues();
+        EclipseStoreProperties configValues = new EclipseStoreProperties();
         configValues.setStorageDirectory(null);
         configValues.setStorageFilesystem(new StorageFilesystem());
         configValues.setBackupDirectory("backup/dir");

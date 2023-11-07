@@ -15,7 +15,7 @@ package org.eclipse.store.integrations.spring.boot.types;
  */
 
 import org.eclipse.serializer.util.logging.Logging;
-import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationValues;
+import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
 import org.eclipse.store.integrations.spring.boot.types.converter.EclipseStoreConfigConverter;
 import org.eclipse.store.storage.embedded.configuration.types.EmbeddedStorageConfigurationBuilder;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageFoundation;
@@ -41,10 +41,10 @@ public class EclipseStoreProviderImpl implements EclipseStoreProvider
     }
 
     @Override
-    public EmbeddedStorageManager createStorage(ConfigurationValues configurationValues)
+    public EmbeddedStorageManager createStorage(EclipseStoreProperties eclipseStoreProperties)
     {
-        EmbeddedStorageFoundation<?> storageFoundation = createStorageFoundation(configurationValues);
-        return createStorage(storageFoundation, configurationValues.getAutoStart());
+        EmbeddedStorageFoundation<?> storageFoundation = createStorageFoundation(eclipseStoreProperties);
+        return createStorage(storageFoundation, eclipseStoreProperties.getAutoStart());
     }
 
     @Override
@@ -59,10 +59,10 @@ public class EclipseStoreProviderImpl implements EclipseStoreProvider
     }
 
     @Override
-    public EmbeddedStorageFoundation<?> createStorageFoundation(ConfigurationValues configurationValues)
+    public EmbeddedStorageFoundation<?> createStorageFoundation(EclipseStoreProperties eclipseStoreProperties)
     {
         final EmbeddedStorageConfigurationBuilder builder = EmbeddedStorageConfigurationBuilder.New();
-        Map<String, String> valueMap = converter.convertConfigurationToMap(configurationValues);
+        Map<String, String> valueMap = converter.convertConfigurationToMap(eclipseStoreProperties);
 
         this.logger.debug("MicroStream configuration items: ");
         valueMap.forEach((key, value) ->
@@ -77,7 +77,7 @@ public class EclipseStoreProviderImpl implements EclipseStoreProvider
 
         EmbeddedStorageFoundation<?> storageFoundation = builder.createEmbeddedStorageFoundation();
 
-        Object o = provideRoot(configurationValues);
+        Object o = provideRoot(eclipseStoreProperties);
         if (o != null)
         {
             storageFoundation.setRoot(o);
@@ -88,17 +88,17 @@ public class EclipseStoreProviderImpl implements EclipseStoreProvider
         return storageFoundation;
     }
 
-    private Object provideRoot(ConfigurationValues configurationValues)
+    private Object provideRoot(EclipseStoreProperties eclipseStoreProperties)
     {
         Object o = null;
-        if (configurationValues.getRoot() != null)
+        if (eclipseStoreProperties.getRoot() != null)
         {
             try
             {
-                o = configurationValues.getRoot().getDeclaredConstructor().newInstance();
+                o = eclipseStoreProperties.getRoot().getDeclaredConstructor().newInstance();
             } catch (Exception e)
             {
-                throw new RuntimeException("Class :" + configurationValues.getRoot() + " could not be instantiated." + e);
+                throw new RuntimeException("Class :" + eclipseStoreProperties.getRoot() + " could not be instantiated." + e);
             }
         }
         return o;

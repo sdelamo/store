@@ -15,14 +15,14 @@ package org.eclipse.store.integrations.spring.boot.types;
  */
 
 
-import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationValues;
+import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
 @AutoConfiguration
 @ComponentScan(basePackages = "org.eclipse.store.integrations.spring.boot.types")
-@EnableConfigurationProperties(ConfigurationValues.class)
+@EnableConfigurationProperties(EclipseStoreProperties.class)
 public class EclipseStoreSpringBoot
 {
 }

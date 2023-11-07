@@ -14,18 +14,18 @@ package org.eclipse.store.integrations.spring.boot.types;
  * #L%
  */
 
-import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationValues;
+import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageFoundation;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
 
 public interface EclipseStoreProvider
 {
 
-    EmbeddedStorageManager createStorage(ConfigurationValues configurationValues);
+    EmbeddedStorageManager createStorage(EclipseStoreProperties eclipseStoreProperties);
 
     EmbeddedStorageManager createStorage(EmbeddedStorageFoundation<?> foundation,  Boolean autoStart);
 
-    EmbeddedStorageFoundation<?> createStorageFoundation(ConfigurationValues configurationValues);
+    EmbeddedStorageFoundation<?> createStorageFoundation(EclipseStoreProperties eclipseStoreProperties);
 
 
 }

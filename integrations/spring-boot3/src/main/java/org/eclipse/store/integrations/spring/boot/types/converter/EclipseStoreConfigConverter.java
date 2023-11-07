@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationValues;
+import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
 import org.eclipse.store.integrations.spring.boot.types.configuration.StorageFilesystem;
 import org.eclipse.store.integrations.spring.boot.types.configuration.aws.AbstractAwsProperties;
 import org.eclipse.store.integrations.spring.boot.types.configuration.aws.Aws;
@@ -63,7 +63,7 @@ public class EclipseStoreConfigConverter
     protected static final String DATA_FILE_CLEANUP_HEAD_FILE = EmbeddedStorageConfigurationPropertyNames.DATA_FILE_CLEANUP_HEAD_FILE;
 
 
-    public Map<String, String> convertConfigurationToMap(ConfigurationValues properties)
+    public Map<String, String> convertConfigurationToMap(EclipseStoreProperties properties)
     {
 
         Map<String, String> configValues = new HashMap<>();

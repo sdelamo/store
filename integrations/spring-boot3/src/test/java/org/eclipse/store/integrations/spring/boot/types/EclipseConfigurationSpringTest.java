@@ -14,8 +14,7 @@ package org.eclipse.store.integrations.spring.boot.types;
  * #L%
  */
 
-import org.eclipse.store.integrations.spring.boot.types.EclipseStoreSpringBoot;
-import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationValues;
+import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
 import org.eclipse.store.integrations.spring.boot.types.converter.EclipseStoreConfigConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class EclipseConfigurationSpringTest
 {
 
     @Autowired
-    ConfigurationValues values;
+    EclipseStoreProperties values;
 
     @Autowired
     EclipseStoreConfigConverter converter;
