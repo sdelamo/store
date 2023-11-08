@@ -1,5 +1,3 @@
-package org.microstream.spring.boot.example.model;
-
 /*-
  * #%L
  * spring-boot3-simple
@@ -13,16 +11,10 @@ package org.microstream.spring.boot.example.model;
  * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class Root
-{
-    private final List<String> jokes = new ArrayList<>();
-
-    public List<String> getJokes()
-    {
-        return jokes;
-    }
+module spring.boot3.simple {
+    requires spring.context;
+    requires spring.boot.autoconfigure;
+    requires spring.boot;
+    requires org.eclipse.store.integrations.spring.boot;
+    requires spring.web;
 }

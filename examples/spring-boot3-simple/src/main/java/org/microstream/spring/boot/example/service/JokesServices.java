@@ -1,7 +1,19 @@
 package org.microstream.spring.boot.example.service;
 
-import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
-import org.microstream.spring.boot.example.model.Root;
+/*-
+ * #%L
+ * spring-boot3-simple
+ * %%
+ * Copyright (C) 2023 MicroStream Software
+ * %%
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ * #L%
+ */
+
 import org.microstream.spring.boot.example.storage.JokesStorage;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -18,7 +30,8 @@ public class JokesServices
     private final JokesStorage jokesStorage;
 
 
-    public String oneJoke(Integer id) {
+    public String oneJoke(Integer id)
+    {
         String joke;
         joke = jokesStorage.oneJoke(Objects.requireNonNullElse(id, 0));
         return joke;
@@ -39,7 +52,8 @@ public class JokesServices
         return jokesStorage.addNewJoke(joke);
     }
 
-    public void loadPredefiniedJokes() {
+    public void loadPredefiniedJokes()
+    {
         List<String> jokes = null;
         try
         {
@@ -49,9 +63,10 @@ public class JokesServices
         {
             throw new RuntimeException(e);
         }
-            List<String> existingJokes = jokesStorage.allJokes();
-            if (existingJokes.containsAll(jokes)) {
-                return;
+        List<String> existingJokes = jokesStorage.allJokes();
+        if (existingJokes.containsAll(jokes))
+        {
+            return;
         }
         jokesStorage.addJokes(jokes);
     }
