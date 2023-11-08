@@ -9,90 +9,69 @@ package org.microstream.spring.boot.example.storage;
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
 
+import org.eclipse.store.integrations.spring.boot.types.concurent.Lockable;
+import org.eclipse.store.integrations.spring.boot.types.concurent.Read;
+import org.eclipse.store.integrations.spring.boot.types.concurent.Write;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
 import org.microstream.spring.boot.example.model.Root;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 @Component
+@Lockable("myGreatLock")
 public class JokesStorage
 {
     private final EmbeddedStorageManager storageManager;
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     public JokesStorage(EmbeddedStorageManager storageManager)
     {
         this.storageManager = storageManager;
     }
 
-    public String oneJoke(Integer id) {
-        String joke;
-        lock.readLock().lock();
-        try
-        {
-            Root root = (Root) storageManager.root();
-            if (id > root.getJokes().size()) {
-                throw new IllegalArgumentException("No jokes with this id");
-            }
-            joke = root.getJokes().get(id);
+    ReentrantReadWriteLock myGreatLock = new ReentrantReadWriteLock();
 
-        }
-        finally
+    @Read
+    public String oneJoke(Integer id)
+    {
+        String joke;
+        Root root = (Root) storageManager.root();
+        if (id > root.getJokes().size())
         {
-            lock.readLock().unlock();
+            throw new IllegalArgumentException("No jokes with this id");
         }
+        joke = root.getJokes().get(id);
         return joke;
     }
 
+    @Read
     public List<String> allJokes()
     {
-        List<String> jokes = null;
-        lock.readLock().lock();
-        try
-        {
-            Root root = (Root) storageManager.root();
-            jokes = root.getJokes();
-        } finally
-        {
-            lock.readLock().unlock();
-        }
-        return jokes;
+        Root root = (Root) storageManager.root();
+        return root.getJokes();
     }
 
+    @Write
     public Integer addNewJoke(String joke)
     {
-        lock.writeLock().lock();
         Root root = (Root) storageManager.root();
-        try
-        {
-            root.getJokes().add(joke);
-            storageManager.storeRoot();
-        } finally
-        {
-            lock.writeLock().unlock();
-        }
+        root.getJokes().add(joke);
+        storageManager.storeRoot();
         return root.getJokes().size();
     }
 
+    @Write
     public void addJokes(List<String> jokes)
     {
-        lock.writeLock().lock();
         Root root = (Root) storageManager.root();
-        try
-        {
-            root.getJokes().addAll(jokes);
-        } finally
-        {
-            lock.writeLock().unlock();
-        }
+        root.getJokes().addAll(jokes);
         storageManager.store(root.getJokes());
     }
 }

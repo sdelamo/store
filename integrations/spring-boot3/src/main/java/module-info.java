@@ -26,14 +26,16 @@ open module org.eclipse.store.integrations.spring.boot
 	exports org.eclipse.store.integrations.spring.boot.types.configuration.sql;
 	exports org.eclipse.store.integrations.spring.boot.types;
     exports org.eclipse.store.integrations.spring.boot.types.converter;
+	exports org.eclipse.store.integrations.spring.boot.types.concurent;
 
-    requires transitive spring.beans;
+	requires transitive spring.beans;
 	requires transitive spring.boot;
 	requires transitive spring.boot.autoconfigure;
 	requires transitive spring.context;
 	requires transitive spring.core;
 	requires transitive org.eclipse.store.storage.embedded.configuration;
 	requires transitive org.eclipse.serializer.configuration;
+	requires transitive org.aspectj.weaver;
 
 
 }
