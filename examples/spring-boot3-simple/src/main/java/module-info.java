@@ -11,10 +11,11 @@
  * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
-module spring.boot3.simple {
-    requires spring.context;
-    requires spring.boot.autoconfigure;
-    requires spring.boot;
-    requires org.eclipse.store.integrations.spring.boot;
-    requires spring.web;
+open module spring.boot3.simple {
+    requires transitive spring.context;
+    requires transitive spring.boot.autoconfigure;
+    requires transitive spring.boot;
+    requires transitive org.eclipse.store.integrations.spring.boot;
+    requires transitive spring.web;
+
 }
