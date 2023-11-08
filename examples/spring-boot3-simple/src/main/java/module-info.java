@@ -11,11 +11,10 @@
  * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
-open module spring.boot3.simple {
+open module org.microstream.spring.boot.example {
     requires transitive spring.context;
     requires transitive spring.boot.autoconfigure;
     requires transitive spring.boot;
     requires transitive org.eclipse.store.integrations.spring.boot;
     requires transitive spring.web;
-
 }
