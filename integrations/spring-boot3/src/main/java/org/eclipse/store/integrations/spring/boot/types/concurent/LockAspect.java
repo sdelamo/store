@@ -18,55 +18,59 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.eclipse.serializer.util.logging.Logging;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Aspect
 @Component
 public class LockAspect
 {
+
+    private final Logger logger = Logging.getLogger(LockAspect.class);
+
     private final ReentrantReadWriteLock globalLock = new ReentrantReadWriteLock();
 
     private final Map<String, ReentrantReadWriteLock> locks = new HashMap<>();
 
-    @Around("@annotation(org.eclipse.store.integrations.spring.boot.types.concurent.Read)")
+    @Around("@annotation(Read)")
     public Object readOperation(ProceedingJoinPoint joinPoint) throws Throwable
     {
         ReentrantReadWriteLock lock = this.findLock(joinPoint);
         lock.readLock().lock();
-        System.out.println("read lock");
+        logger.trace("lock readLock");
         Object proceed;
         try
         {
             proceed = joinPoint.proceed();
         } finally
         {
-            System.out.println("read unlock");
             lock.readLock().unlock();
+            logger.trace("unlock readLock");
         }
         return proceed;
     }
 
-    @Around("@annotation(org.eclipse.store.integrations.spring.boot.types.concurent.Write)")
+    @Around("@annotation(Write)")
     public Object writeOperation(ProceedingJoinPoint joinPoint) throws Throwable
     {
         ReentrantReadWriteLock lock = this.findLock(joinPoint);
         lock.readLock().lock();
-
         System.out.println("write lock");
+
         Object proceed;
         try
         {
             proceed = joinPoint.proceed();
         } finally
         {
-            System.out.println("write unlock");
             lock.writeLock().unlock();
+            System.out.println("write unlock");
         }
         return proceed;
     }
@@ -82,7 +86,8 @@ public class LockAspect
         if (annotation != null)
         {
             String lockName = annotation.value();
-            finalLock = processLockByName(lockName);
+            logger.trace("Found method lock annotation for lock: {}", lockName);
+            finalLock = getOrCreateLock(lockName);
         } else
         {
             //class annotation second
@@ -91,29 +96,33 @@ public class LockAspect
             if (classAnnotation != null)
             {
                 String classLockName = classAnnotation.value();
-                finalLock = processLockByName(classLockName);
+                logger.trace("Found class lock annotation for lock: {}", classLockName);
+                finalLock = getOrCreateLock(classLockName);
             } else
             {
                 // no annotation, use global lock
+                logger.trace("Found no @Lockable annotation, use global lock");
                 finalLock = globalLock;
             }
         }
         return finalLock;
     }
 
-    private ReentrantReadWriteLock processLockByName(String lockName)
+    private ReentrantReadWriteLock getOrCreateLock(String lockName)
     {
-        ReentrantReadWriteLock newLock;
+        ReentrantReadWriteLock lock;
 
         if (locks.containsKey(lockName))
         {
-            newLock = locks.get(lockName);
+            logger.trace("Lock for name: {} found, will be used", lockName);
+            lock = locks.get(lockName);
         } else
         {
-            newLock = new ReentrantReadWriteLock();
-            locks.put(lockName, newLock);
+            logger.trace("Lock for name: {} not found, create new one ", lockName);
+            lock = new ReentrantReadWriteLock();
+            locks.put(lockName, lock);
         }
-        return newLock;
+        return lock;
     }
 
 }
