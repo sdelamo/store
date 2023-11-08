@@ -58,7 +58,6 @@
         <module>integrations</module>
         <module>integrations/spring-boot3</module>
         <module>examples</module>
-        <module>examples/spring-boot3-simple</module>
     </modules>
 
     <scm>
