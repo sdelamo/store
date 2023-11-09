@@ -115,7 +115,7 @@ public class LockAspect
         return finalLock;
     }
 
-    private ReentrantReadWriteLock getOrCreateLock(String lockName)
+    private synchronized ReentrantReadWriteLock getOrCreateLock(String lockName)
     {
         ReentrantReadWriteLock lock;
 
