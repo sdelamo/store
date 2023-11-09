@@ -33,7 +33,7 @@ public class JokesController
         this.jokesServices = jokesServices;
     }
 
-    @GetMapping("/jokes")
+    @GetMapping
     public List<String> getAll()
     {
         return jokesServices.allJokes();

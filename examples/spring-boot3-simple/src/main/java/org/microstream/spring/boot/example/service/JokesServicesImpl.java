@@ -18,11 +18,12 @@ import org.microstream.spring.boot.example.storage.JokesStorage;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class JokesServicesImpl implements JokesServices
@@ -59,14 +60,11 @@ public class JokesServicesImpl implements JokesServices
     public void loadPredefinedJokes()
     {
         List<String> jokes = null;
-        try
-        {
-            File file = ResourceUtils.getFile("classpath:jokes.txt");
-            jokes = Files.readAllLines(file.toPath());
-        } catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("jokes.txt");
+        assert inputStream != null;
+        jokes = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.toList());
         List<String> existingJokes = jokesStorage.allJokes();
         if (existingJokes.containsAll(jokes))
         {
