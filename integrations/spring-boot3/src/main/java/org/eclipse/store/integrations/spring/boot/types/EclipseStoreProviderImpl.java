@@ -9,12 +9,13 @@ package org.eclipse.store.integrations.spring.boot.types;
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  * #L%
  */
 
 import org.eclipse.serializer.util.logging.Logging;
+import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationPair;
 import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
 import org.eclipse.store.integrations.spring.boot.types.converter.EclipseStoreConfigConverter;
 import org.eclipse.store.storage.embedded.configuration.types.EmbeddedStorageConfigurationBuilder;
@@ -41,14 +42,14 @@ public class EclipseStoreProviderImpl implements EclipseStoreProvider
     }
 
     @Override
-    public EmbeddedStorageManager createStorage(EclipseStoreProperties eclipseStoreProperties)
+    public EmbeddedStorageManager createStorage(EclipseStoreProperties eclipseStoreProperties, ConfigurationPair... additionalConfiguration)
     {
-        EmbeddedStorageFoundation<?> storageFoundation = createStorageFoundation(eclipseStoreProperties);
+        EmbeddedStorageFoundation<?> storageFoundation = createStorageFoundation(eclipseStoreProperties, additionalConfiguration);
         return createStorage(storageFoundation, eclipseStoreProperties.getAutoStart());
     }
 
     @Override
-    public EmbeddedStorageManager createStorage(EmbeddedStorageFoundation<?> foundation, Boolean autoStart)
+    public EmbeddedStorageManager createStorage(EmbeddedStorageFoundation<?> foundation, boolean autoStart)
     {
         EmbeddedStorageManager storageManager = foundation.createEmbeddedStorageManager();
         if (autoStart)
@@ -59,10 +60,14 @@ public class EclipseStoreProviderImpl implements EclipseStoreProvider
     }
 
     @Override
-    public EmbeddedStorageFoundation<?> createStorageFoundation(EclipseStoreProperties eclipseStoreProperties)
+    public EmbeddedStorageFoundation<?> createStorageFoundation(EclipseStoreProperties eclipseStoreProperties, ConfigurationPair... additionalConfiguration)
     {
+
         final EmbeddedStorageConfigurationBuilder builder = EmbeddedStorageConfigurationBuilder.New();
         Map<String, String> valueMap = converter.convertConfigurationToMap(eclipseStoreProperties);
+        for (ConfigurationPair pair : additionalConfiguration) {
+            valueMap.put(pair.key(), pair.value());
+        }
 
         this.logger.debug("MicroStream configuration items: ");
         valueMap.forEach((key, value) ->

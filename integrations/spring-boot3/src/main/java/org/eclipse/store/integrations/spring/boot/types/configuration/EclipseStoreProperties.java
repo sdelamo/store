@@ -161,8 +161,17 @@ public class EclipseStoreProperties
      * and might result in Exceptions when code is executed that relies on a started StorageManager.
      * Default value is true.
      */
-    private Boolean autoStart = true;
+    private boolean autoStart = true;
 
+    public Class<?> getRoot()
+    {
+        return root;
+    }
+
+    public void setRoot(Class<?> root)
+    {
+        this.root = root;
+    }
 
     public String getStorageDirectory()
     {
@@ -344,6 +353,16 @@ public class EclipseStoreProperties
         this.entityCacheTimeout = entityCacheTimeout;
     }
 
+    public String getEntityCacheThreshold()
+    {
+        return entityCacheThreshold;
+    }
+
+    public void setEntityCacheThreshold(String entityCacheThreshold)
+    {
+        this.entityCacheThreshold = entityCacheThreshold;
+    }
+
     public String getDataFileMinimumSize()
     {
         return dataFileMinimumSize;
@@ -384,33 +403,13 @@ public class EclipseStoreProperties
         this.dataFileCleanupHeadFile = dataFileCleanupHeadFile;
     }
 
-    public Boolean getAutoStart()
+    public boolean getAutoStart()
     {
         return autoStart;
     }
 
-    public void setAutoStart(final Boolean autoStart)
+    public void setAutoStart(boolean autoStart)
     {
         this.autoStart = autoStart;
-    }
-
-    public String getEntityCacheThreshold()
-    {
-        return entityCacheThreshold;
-    }
-
-    public void setEntityCacheThreshold(String entityCacheThreshold)
-    {
-        this.entityCacheThreshold = entityCacheThreshold;
-    }
-
-    public Class<?> getRoot()
-    {
-        return root;
-    }
-
-    public void setRoot(Class<?> root)
-    {
-        this.root = root;
     }
 }

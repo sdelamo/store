@@ -15,6 +15,7 @@ package org.eclipse.store.integrations.spring.boot.types;
  */
 
 
+import org.eclipse.store.integrations.spring.boot.types.configuration.ConfigurationPair;
 import org.eclipse.store.integrations.spring.boot.types.configuration.EclipseStoreProperties;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageFoundation;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
@@ -62,7 +63,8 @@ public class RestartStorageBeanTest
 
         Assertions.assertEquals(tempFolder, manager.configuration().fileProvider().baseDirectory().toPathString());
 
-        EmbeddedStorageFoundation<?> storageFoundation = provider.createStorageFoundation(myConfiguration);
+        ConfigurationPair pair = new ConfigurationPair("someKey", "someValue");
+        EmbeddedStorageFoundation<?> storageFoundation = provider.createStorageFoundation(myConfiguration, pair);
         RestartRoot root2 = new RestartRoot();
         storageFoundation.setRoot(root2);
         try (EmbeddedStorageManager storage = storageFoundation.start())
