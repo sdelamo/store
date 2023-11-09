@@ -14,7 +14,7 @@ package org.microstream.spring.boot.example.storage;
  * #L%
  */
 
-import org.eclipse.store.integrations.spring.boot.types.concurent.Lockable;
+import org.eclipse.store.integrations.spring.boot.types.concurent.Mutex;
 import org.eclipse.store.integrations.spring.boot.types.concurent.Read;
 import org.eclipse.store.integrations.spring.boot.types.concurent.Write;
 import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
@@ -22,11 +22,10 @@ import org.microstream.spring.boot.example.model.Root;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 @Component
-@Lockable("myGreatLock")
+@Mutex("myGreatLock")
 public class JokesStorage
 {
     private final EmbeddedStorageManager storageManager;
@@ -36,9 +35,9 @@ public class JokesStorage
         this.storageManager = storageManager;
     }
 
-    ReentrantReadWriteLock myGreatLock = new ReentrantReadWriteLock();
 
     @Read
+    @Mutex("MethodLock")
     public String oneJoke(Integer id)
     {
         String joke;

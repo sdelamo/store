@@ -20,7 +20,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.eclipse.serializer.util.logging.Logging;
 import org.slf4j.Logger;
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ConditionContext;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ClassUtils;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -29,6 +34,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Aspect
 @Component
+@Conditional(LockAspect.AspectJCondition.class)
 public class LockAspect
 {
 
@@ -60,8 +66,8 @@ public class LockAspect
     public Object writeOperation(ProceedingJoinPoint joinPoint) throws Throwable
     {
         ReentrantReadWriteLock lock = this.findLock(joinPoint);
-        lock.readLock().lock();
-        System.out.println("write lock");
+        lock.writeLock().lock();
+        logger.trace("write lock");
 
         Object proceed;
         try
@@ -70,8 +76,9 @@ public class LockAspect
         } finally
         {
             lock.writeLock().unlock();
-            System.out.println("write unlock");
+            logger.trace("write unlock");
         }
+
         return proceed;
     }
 
@@ -82,7 +89,7 @@ public class LockAspect
 
         //method annotation first
         ReentrantReadWriteLock finalLock;
-        Lockable annotation = method.getAnnotation(Lockable.class);
+        Mutex annotation = method.getAnnotation(Mutex.class);
         if (annotation != null)
         {
             String lockName = annotation.value();
@@ -92,7 +99,7 @@ public class LockAspect
         {
             //class annotation second
             Class<?> declaringClass = method.getDeclaringClass();
-            Lockable classAnnotation = declaringClass.getAnnotation(Lockable.class);
+            Mutex classAnnotation = declaringClass.getAnnotation(Mutex.class);
             if (classAnnotation != null)
             {
                 String classLockName = classAnnotation.value();
@@ -125,4 +132,12 @@ public class LockAspect
         return lock;
     }
 
+
+    static class AspectJCondition implements Condition
+    {
+        @Override
+        public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+            return ClassUtils.isPresent("org.aspectj.lang.ProceedingJoinPoint", context.getClassLoader());
+        }
+    }
 }
