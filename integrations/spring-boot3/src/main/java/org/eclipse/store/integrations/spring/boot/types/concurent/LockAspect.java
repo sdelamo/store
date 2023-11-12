@@ -30,6 +30,7 @@ import org.springframework.util.ClassUtils;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Aspect
@@ -42,7 +43,8 @@ public class LockAspect
 
     private final ReentrantReadWriteLock globalLock = new ReentrantReadWriteLock();
 
-    private final Map<String, ReentrantReadWriteLock> locks = new HashMap<>();
+    private final ConcurrentHashMap<String, ReentrantReadWriteLock> locks = new ConcurrentHashMap<>();
+
 
     @Around("@annotation(Read)")
     public Object readOperation(ProceedingJoinPoint joinPoint) throws Throwable
@@ -115,21 +117,11 @@ public class LockAspect
         return finalLock;
     }
 
-    private synchronized ReentrantReadWriteLock getOrCreateLock(String lockName)
-    {
-        ReentrantReadWriteLock lock;
-
-        if (locks.containsKey(lockName))
-        {
-            logger.trace("Lock for name: {} found, will be used", lockName);
-            lock = locks.get(lockName);
-        } else
-        {
-            logger.trace("Lock for name: {} not found, create new one ", lockName);
-            lock = new ReentrantReadWriteLock();
-            locks.put(lockName, lock);
-        }
-        return lock;
+    private ReentrantReadWriteLock getOrCreateLock(String lockName) {
+        return locks.computeIfAbsent(lockName, k -> {
+            logger.trace("Lock for name: {} not found, creating a new one", lockName);
+            return new ReentrantReadWriteLock();
+        });
     }
 
 
