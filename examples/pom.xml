@@ -36,7 +36,6 @@
 		<module>loading</module>
 		<module>reloader</module>
 		<module>storing</module>
-		<module>spring-boot3-simple</module>
 	</modules>
 
 	<dependencyManagement>
@@ -77,4 +76,16 @@
             </plugin>
         </plugins>
     </build>
+
+	<profiles>
+		<profile>
+			<id>from_java_17</id>
+			<activation>
+				<jdk>[17,)</jdk>
+			</activation>
+			<modules>
+				<module>spring-boot3-simple</module>
+			</modules>
+		</profile>
+	</profiles>
 </project>

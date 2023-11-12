@@ -56,7 +56,6 @@
         <module>afs</module>
         <module>storage</module>
         <module>integrations</module>
-        <module>integrations/spring-boot3</module>
         <module>examples</module>
     </modules>
 
