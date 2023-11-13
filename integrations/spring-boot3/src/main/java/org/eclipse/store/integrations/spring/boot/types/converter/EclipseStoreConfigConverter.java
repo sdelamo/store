@@ -23,8 +23,6 @@ import org.eclipse.store.integrations.spring.boot.types.configuration.StorageFil
 import org.eclipse.store.integrations.spring.boot.types.configuration.aws.AbstractAwsProperties;
 import org.eclipse.store.integrations.spring.boot.types.configuration.aws.Aws;
 import org.eclipse.store.integrations.spring.boot.types.configuration.azure.Azure;
-import org.eclipse.store.integrations.spring.boot.types.configuration.oracle.Oracle;
-import org.eclipse.store.integrations.spring.boot.types.configuration.oracle.coherence.Coherence;
 import org.eclipse.store.integrations.spring.boot.types.configuration.oraclecloud.Oraclecloud;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.AbstractSqlConfiguration;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.Sql;
@@ -124,17 +122,9 @@ public class EclipseStoreConfigConverter
         {
             values.putAll(prepareAzure(properties.getAzure(), composeKey(key, ConfigKeys.AZURE.value())));
         }
-        if (properties.getHazelcast() != null)
-        {
-            values.put(ConfigKeys.HAZELCAST_CONFIGURATION.value(), properties.getHazelcast().getConfiguration());
-        }
         if (properties.getOraclecloud() != null)
         {
             values.putAll(prepareOracleCloud(properties.getOraclecloud(), composeKey(key, ConfigKeys.ORACLECLOUD.value())));
-        }
-        if (properties.getOracle() != null)
-        {
-            values.putAll(prepareOracle(properties.getOracle(), composeKey(key, ConfigKeys.ORACLE.value())));
         }
         if (properties.getRedis() != null)
         {
@@ -142,24 +132,6 @@ public class EclipseStoreConfigConverter
         }
 
 
-        return values;
-    }
-
-    private Map<String, String> prepareOracle(Oracle oracle, String key)
-    {
-        Map<String, String> values = new HashMap<>();
-        if (oracle.getCoherence() != null)
-        {
-            values.putAll(prepareCoherence(oracle.getCoherence(), composeKey(key, ConfigKeys.COHERENCE.value())));
-        }
-        return values;
-    }
-
-    private Map<String, String> prepareCoherence(Coherence coherence, String key)
-    {
-        Map<String, String> values = new HashMap<>();
-        values.put(composeKey(key, ConfigKeys.COHERENCE_CACHE_NAME.value()), coherence.getCacheName());
-        values.put(composeKey(key, ConfigKeys.COHERENCE_CACHE_CONFIG.value()), coherence.getCacheConfig());
         return values;
     }
 

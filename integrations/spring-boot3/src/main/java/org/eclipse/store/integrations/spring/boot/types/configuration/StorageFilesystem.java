@@ -20,8 +20,6 @@ import java.util.Map;
 import org.eclipse.store.integrations.spring.boot.types.configuration.aws.Aws;
 import org.eclipse.store.integrations.spring.boot.types.configuration.azure.Azure;
 import org.eclipse.store.integrations.spring.boot.types.configuration.googlecloud.Googlecloud;
-import org.eclipse.store.integrations.spring.boot.types.configuration.hazelcast.Hazelcast;
-import org.eclipse.store.integrations.spring.boot.types.configuration.oracle.Oracle;
 import org.eclipse.store.integrations.spring.boot.types.configuration.oraclecloud.Oraclecloud;
 import org.eclipse.store.integrations.spring.boot.types.configuration.redis.Redis;
 import org.eclipse.store.integrations.spring.boot.types.configuration.sql.Sql;
@@ -37,9 +35,6 @@ public class StorageFilesystem
     private Aws aws;
 
     @NestedConfigurationProperty
-    private Hazelcast hazelcast;
-
-    @NestedConfigurationProperty
     private Azure azure;
 
     /**
@@ -53,9 +48,6 @@ public class StorageFilesystem
 
     @NestedConfigurationProperty
     private Googlecloud googlecloud;
-
-    @NestedConfigurationProperty
-    private Oracle oracle;
 
     @NestedConfigurationProperty
     private Redis redis;
@@ -80,16 +72,6 @@ public class StorageFilesystem
         this.aws = aws;
     }
 
-    public Hazelcast getHazelcast()
-    {
-        return hazelcast;
-    }
-
-    public void setHazelcast(Hazelcast hazelcast)
-    {
-        this.hazelcast = hazelcast;
-    }
-
     public Map<String, String> getKafkaProperties()
     {
         return kafkaProperties;
@@ -108,16 +90,6 @@ public class StorageFilesystem
     public void setOraclecloud(Oraclecloud oraclecloud)
     {
         this.oraclecloud = oraclecloud;
-    }
-
-    public Oracle getOracle()
-    {
-        return oracle;
-    }
-
-    public void setOracle(Oracle oracle)
-    {
-        this.oracle = oracle;
     }
 
     public Redis getRedis()
