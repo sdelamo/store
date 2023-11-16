@@ -33,7 +33,7 @@ public class InjectStorageBeanTest
     void storeSomething()
     {
         manager.start();
-        manager.setRoot("ahoj");
+        manager.setRoot("hallo");
         manager.storeRoot();
         manager.shutdown();
     }
