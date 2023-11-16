@@ -25,4 +25,6 @@ public interface JokesServices
     Integer addNewJoke(String joke);
 
     void loadPredefinedJokes();
+
+    Integer insertNewJoke(String joke);
 }

@@ -14,6 +14,7 @@ package org.microstream.spring.boot.example.service;
  * #L%
  */
 
+import org.eclipse.store.integrations.spring.boot.types.concurent.Write;
 import org.microstream.spring.boot.example.storage.JokesStorage;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -73,4 +74,12 @@ public class JokesServicesImpl implements JokesServices
         jokesStorage.addJokes(jokes);
     }
 
+    @Override
+    @Write
+    public Integer insertNewJoke(String joke)
+    {
+        List<String> jokes = jokesStorage.allJokes();
+        jokes.add(joke);
+        return jokesStorage.saveAllJokes(jokes);
+    }
 }

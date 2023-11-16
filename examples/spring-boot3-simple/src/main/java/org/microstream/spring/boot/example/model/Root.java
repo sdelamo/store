@@ -19,10 +19,15 @@ import java.util.List;
 
 public class Root
 {
-    private final List<String> jokes = new ArrayList<>();
+    private List<String> jokes = new ArrayList<>();
 
     public List<String> getJokes()
     {
         return jokes;
+    }
+
+    public void setJokes(List<String> jokes)
+    {
+        this.jokes = jokes;
     }
 }

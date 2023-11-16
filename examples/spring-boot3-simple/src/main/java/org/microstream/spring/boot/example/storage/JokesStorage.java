@@ -25,4 +25,6 @@ public interface JokesStorage
     Integer addNewJoke(String joke);
 
     void addJokes(List<String> jokes);
+
+    Integer saveAllJokes(List<String> jokes);
 }

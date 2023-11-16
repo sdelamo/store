@@ -2,6 +2,12 @@
 
 This application is aimed at showcasing the capabilities of the Eclipse Store Spring Boot extension. It demonstrates how to integrate a pre-configured storage into an application as a bean, how to utilize the locking API, and how to design an MVC application using Eclipse Store.
 
+## Implementation Notes
+* Synchronization over shared data structures is handled using the annotations `@Read` and `@Write`.
+* The Controller performs data conversion into JSON, therefore it must always operate with immutable data or, in the case of mutable data, it must receive a copy of such data.
+
+## Build
+
 The generation of the executable jar file can be performed by issuing the following command
 
 ```shell

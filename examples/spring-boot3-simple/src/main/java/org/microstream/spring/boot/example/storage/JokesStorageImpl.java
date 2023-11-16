@@ -14,6 +14,7 @@ package org.microstream.spring.boot.example.storage;
  * #L%
  */
 
+import org.eclipse.serializer.persistence.types.Storer;
 import org.eclipse.store.integrations.spring.boot.types.concurent.Mutex;
 import org.eclipse.store.integrations.spring.boot.types.concurent.Read;
 import org.eclipse.store.integrations.spring.boot.types.concurent.Write;
@@ -21,11 +22,11 @@ import org.eclipse.store.storage.embedded.types.EmbeddedStorageManager;
 import org.microstream.spring.boot.example.model.Root;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Component
-@Mutex("myGreatLock")
 public class JokesStorageImpl implements JokesStorage
 {
     private final EmbeddedStorageManager storageManager;
@@ -55,7 +56,7 @@ public class JokesStorageImpl implements JokesStorage
     public List<String> allJokes()
     {
         Root root = (Root) storageManager.root();
-        return root.getJokes();
+        return new ArrayList<>(root.getJokes()); // Create new List... never return original one.
     }
 
     @Override
@@ -75,5 +76,17 @@ public class JokesStorageImpl implements JokesStorage
         Root root = (Root) storageManager.root();
         root.getJokes().addAll(jokes);
         storageManager.store(root.getJokes());
+    }
+
+    @Override
+    @Write
+    public Integer saveAllJokes(List<String> jokes)
+    {
+        Root root = (Root) storageManager.root();
+        root.setJokes(jokes);
+        Storer eagerStorer = storageManager.createEagerStorer();
+        eagerStorer.store(root);
+        eagerStorer.commit();
+        return root.getJokes().size();
     }
 }

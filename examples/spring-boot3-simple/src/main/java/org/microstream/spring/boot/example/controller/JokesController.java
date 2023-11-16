@@ -15,10 +15,7 @@ package org.microstream.spring.boot.example.controller;
  */
 
 import org.microstream.spring.boot.example.service.JokesServices;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,7 +43,7 @@ public class JokesController
     }
 
     @PostMapping("/add")
-    public Integer putOne(String joke)
+    public Integer putOne(@RequestBody String joke)
     {
         return jokesServices.addNewJoke(joke);
     }
@@ -55,5 +52,19 @@ public class JokesController
     public void init()
     {
         jokesServices.loadPredefinedJokes();
+    }
+
+    /**
+     * This method functions similarly to the 'putOne' method. However, it differs in its implementation by utilizing a nested locking mechanism.
+     * The '@Write Lock' annotation is applied at the service layer, invoking the storage layer within another locking annotation.
+     * This implementation is solely intended for demonstration purposes.
+     *
+     * @param joke The new joke to be added.
+     * @return The position of the currently inserted joke in storage.
+     */
+    @PostMapping("/insert")
+    public Integer insert(@RequestBody String joke)
+    {
+        return jokesServices.insertNewJoke(joke);
     }
 }
